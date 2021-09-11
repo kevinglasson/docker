@@ -1,0 +1,244 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: download-whosonfirst
+spec:
+  template:
+    spec:
+      containers:
+        - image: pelias/whosonfirst:master
+          name: pelias-whosonfirst
+          resources: {}
+          command: ["./bin/download"]
+          volumeMounts:
+            - mountPath: /data
+              name: shared-data
+            - mountPath: /data/blacklist
+              name: shared-blacklist
+            - mountPath: /code/pelias.json
+              subPath: pelias.json
+              name: pelias-json
+      restartPolicy: Never
+      volumes:
+        - name: shared-data
+          persistentVolumeClaim:
+            claimName: shared-data-claim
+        - name: shared-blacklist
+          persistentVolumeClaim:
+            claimName: shared-blacklist-claim
+        - name: pelias-json
+          configMap:
+            name: pelias-json
+            items:
+              - key: pelias.json
+                path: pelias.json
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: download-openaddresses
+spec:
+  template:
+    spec:
+      containers:
+        - image: pelias/openaddresses:master
+          name: pelias-openaddresses
+          resources: {}
+          command: ["./bin/download"]
+          volumeMounts:
+            - mountPath: /data
+              name: shared-data
+            - mountPath: /data/blacklist
+              name: shared-blacklist
+            - mountPath: /code/pelias.json
+              subPath: pelias.json
+              name: pelias-json
+      restartPolicy: Never
+      volumes:
+        - name: shared-data
+          persistentVolumeClaim:
+            claimName: shared-data-claim
+        - name: shared-blacklist
+          persistentVolumeClaim:
+            claimName: shared-blacklist-claim
+        - name: pelias-json
+          configMap:
+            name: pelias-json
+            items:
+              - key: pelias.json
+                path: pelias.json
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: download-openstreetmap
+spec:
+  template:
+    spec:
+      containers:
+        - image: pelias/openstreetmap:master
+          name: pelias-openstreetmap
+          resources: {}
+          command: ["./bin/download"]
+          volumeMounts:
+            - mountPath: /data
+              name: shared-data
+            - mountPath: /data/blacklist
+              name: shared-blacklist
+            - mountPath: /code/pelias.json
+              subPath: pelias.json
+              name: pelias-json
+      restartPolicy: Never
+      volumes:
+        - name: shared-data
+          persistentVolumeClaim:
+            claimName: shared-data-claim
+        - name: shared-blacklist
+          persistentVolumeClaim:
+            claimName: shared-blacklist-claim
+        - name: pelias-json
+          configMap:
+            name: pelias-json
+            items:
+              - key: pelias.json
+                path: pelias.json
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: download-geonames
+spec:
+  template:
+    spec:
+      containers:
+        - image: pelias/geonames:master
+          name: pelias-geonames
+          resources: {}
+          command: ["./bin/download"]
+          volumeMounts:
+            - mountPath: /data
+              name: shared-data
+            - mountPath: /data/blacklist
+              name: shared-blacklist
+            - mountPath: /code/pelias.json
+              subPath: pelias.json
+              name: pelias-json
+      restartPolicy: Never
+      volumes:
+        - name: shared-data
+          persistentVolumeClaim:
+            claimName: shared-data-claim
+        - name: shared-blacklist
+          persistentVolumeClaim:
+            claimName: shared-blacklist-claim
+        - name: pelias-json
+          configMap:
+            name: pelias-json
+            items:
+              - key: pelias.json
+                path: pelias.json
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: download-tiger
+spec:
+  template:
+    spec:
+      containers:
+        - image: pelias/interpolation:master
+          name: pelias-tiger
+          resources: {}
+          command: ["./bin/download-tiger"]
+          volumeMounts:
+            - mountPath: /data
+              name: shared-data
+            - mountPath: /data/blacklist
+              name: shared-blacklist
+            - mountPath: /code/pelias.json
+              subPath: pelias.json
+              name: pelias-json
+      restartPolicy: Never
+      volumes:
+        - name: shared-data
+          persistentVolumeClaim:
+            claimName: shared-data-claim
+        - name: shared-blacklist
+          persistentVolumeClaim:
+            claimName: shared-blacklist-claim
+        - name: pelias-json
+          configMap:
+            name: pelias-json
+            items:
+              - key: pelias.json
+                path: pelias.json
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: download-transit
+spec:
+  template:
+    spec:
+      containers:
+        - image: pelias/transit:master
+          name: pelias-transit
+          resources: {}
+          command: ["./bin/download"]
+          volumeMounts:
+            - mountPath: /data
+              name: shared-data
+            - mountPath: /data/blacklist
+              name: shared-blacklist
+            - mountPath: /code/pelias.json
+              subPath: pelias.json
+              name: pelias-json
+      restartPolicy: Never
+      volumes:
+        - name: shared-data
+          persistentVolumeClaim:
+            claimName: shared-data-claim
+        - name: shared-blacklist
+          persistentVolumeClaim:
+            claimName: shared-blacklist-claim
+        - name: pelias-json
+          configMap:
+            name: pelias-json
+            items:
+              - key: pelias.json
+                path: pelias.json
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: download-csv
+spec:
+  template:
+    spec:
+      containers:
+        - image: pelias/csv-importer:master
+          name: pelias-csv
+          resources: {}
+          command: ["./bin/download"]
+          volumeMounts:
+            - mountPath: /data
+              name: shared-data
+            - mountPath: /data/blacklist
+              name: shared-blacklist
+            - mountPath: /code/pelias.json
+              subPath: pelias.json
+              name: pelias-json
+      restartPolicy: Never
+      volumes:
+        - name: shared-data
+          persistentVolumeClaim:
+            claimName: shared-data-claim
+        - name: shared-blacklist
+          persistentVolumeClaim:
+            claimName: shared-blacklist-claim
+        - name: pelias-json
+          configMap:
+            name: pelias-json
+            items:
+              - key: pelias.json
+                path: pelias.json
