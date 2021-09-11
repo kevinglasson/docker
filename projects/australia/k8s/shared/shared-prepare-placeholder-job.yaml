@@ -1,0 +1,35 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: prepare-placeholder
+spec:
+  template:
+    spec:
+      containers:
+        - image: pelias/placeholder:master
+          name: pelias-placeholder
+          resources: {}
+          command: ["bash", "-c"]
+          args: ["./cmd/extract.sh && ./cmd/build.sh"]
+          volumeMounts:
+            - mountPath: /data
+              name: shared-data
+            - mountPath: /data/blacklist
+              name: shared-blacklist
+            - mountPath: /code/pelias.json
+              subPath: pelias.json
+              name: pelias-json
+      restartPolicy: Never
+      volumes:
+        - name: shared-data
+          persistentVolumeClaim:
+            claimName: shared-data-claim
+        - name: shared-blacklist
+          persistentVolumeClaim:
+            claimName: shared-blacklist-claim
+        - name: pelias-json
+          configMap:
+            name: pelias-json
+            items:
+              - key: pelias.json
+                path: pelias.json

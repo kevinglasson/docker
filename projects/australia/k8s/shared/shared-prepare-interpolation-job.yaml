@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: prepare-interpolation
+spec:
+  template:
+    spec:
+      containers:
+        - image: pelias/interpolation:master
+          name: pelias-interpolation
+          resources: {}
+          command: ["bash", "./docker_build.sh"]
+          volumeMounts:
+            - mountPath: /data
+              name: shared-data
+            - mountPath: /code/pelias.json
+              subPath: pelias.json
+              name: pelias-json
+      restartPolicy: Never
+      volumes:
+        - name: shared-data
+          persistentVolumeClaim:
+            claimName: shared-data-claim
+        - name: pelias-json
+          configMap:
+            name: pelias-json
+            items:
+              - key: pelias.json
+                path: pelias.json
